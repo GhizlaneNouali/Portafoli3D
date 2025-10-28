@@ -1,0 +1,260 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <style>
+      body { margin: 0; overflow: hidden; }
+      
+      .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 255, 255, 0.95);
+        padding: 30px;
+        border-radius: 15px;
+        z-index: 1000;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+        border: 2px solid white;
+        box-shadow: 0 0 30px rgba(229, 255, 255, 0.5);
+      }
+      
+      .modal.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+        to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      }
+      
+      .modal h2 {
+        color: black;
+        margin-top: 0;
+        font-family: Arial, sans-serif;
+        font-size: 24px;
+      }
+      
+      .modal p {
+        color: black; 
+        line-height: 1.6;
+        font-family: Arial, sans-serif;
+      }
+      
+      .modal ul {
+        list-style: none;
+        padding: 0;
+      }
+      
+      .modal li {
+        margin: 15px 0;
+      }
+      
+      .modal a {
+        color: black;
+        text-decoration: none;
+        font-size: 18px;
+        display: block;
+        padding: 10px;
+        background: rgba(122, 120, 255, 0.649);
+        border-radius: 5px;
+        transition: all 0.3s;
+      }
+      
+      .modal a:hover {
+        background: rgba(136, 136, 136, 0.3);
+        transform: translateX(10px);
+      }
+      
+      .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 30px;
+        color: #ff0000;
+        cursor: pointer;
+        background: none;
+        border: none;
+        transition: transform 0.2s;
+      }
+      
+      .close-btn:hover {
+        transform: scale(1.2);
+      }
+      
+      .video-container {
+        margin: 15px 0;
+        border: 2px solid #777777;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      
+      .video-container iframe {
+        width: 100%;
+        height: 315px;
+      }
+
+      .modal-content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      
+      .modal-content > * {
+        flex: 1 1 calc(50% - 20px);
+        box-sizing: border-box;
+      }
+      
+    </style>
+    <script>
+      AFRAME.registerComponent("mylink", {
+        init: function() {  
+          this.el.addEventListener("click", (e) => {              
+            window.location = this.data.href;      
+          })
+        }
+      });
+
+      AFRAME.registerComponent("open-modal", {
+        schema: { type: 'string' },
+        init: function() {  
+          this.el.addEventListener("click", (e) => {
+            const modalId = this.data;
+            const modal = document.getElementById(modalId);
+            if (modal) {
+              modal.classList.add('active');
+            }
+          });
+        }
+      });
+
+      function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+          modal.classList.remove('active');
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Modal Sobre Mi -->
+    <div id="modal-sobremi" class="modal">
+      <button class="close-btn" onclick="closeModal('modal-sobremi')">×</button>
+      <h2>Sobre Mí</h2>
+      <p>
+        Hola! Soc estudiant de Desenvolupament d'Aplicacions Multiplataforma (DAM).  
+        M'apassiona la tecnologia i la programació, i m'agrada crear aplicacions útils i creatives.  
+        Sempre estic aprenent i buscant noves maneres de millorar com a desenvolupadora.
+      </p>
+      
+    </div>
+
+    <!-- Modal Treballs Web -->
+    <div id="modal-treballs" class="modal">
+      <button class="close-btn" onclick="closeModal('modal-treballs')">×</button>
+      <h2>Treballs Web</h2>
+      <ul>
+        <div class="modal-content">
+            <li><a href="https://web1.com" >Web 1</a></li>
+            <li><a href="https://web2.com" >Web 2</a></li>
+            <li><a href="https://web3.com" >Web 3</a></li>
+            <li><a href="https://web4.com" >Web 4</a></li>
+        </div>
+      </ul>
+    </div>
+
+    <!-- Modal Projectes -->
+    <div id="modal-projectes" class="modal">
+      <button class="close-btn" onclick="closeModal('modal-projectes')">×</button>
+      <h2>Projectes</h2>
+        <div class="modal-content">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/8GTaO9XhA5M" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+          </div>
+          
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/Q9fwkpxr3Dw" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+    </div>
+
+    <a-scene cursor="rayOrigin: mouse">
+      <a-assets>
+        <img id="projectes" src="assets/pantalla.jpg">
+        <img id="github" src="assets/git-hub.jpg">
+        <img id="treballsWeb" src="assets/treballs.jpg">
+        <img id="sobremi" src="assets/sobre-mi.jpg">
+        <img id="imgCasa" src="assets/habitacio.jpg">
+      </a-assets>
+     
+      <a-entity camera look-controls wasd-controls="false" position="0 1.6 0">
+        <a-entity cursor="fuse: true; fuseTimeout: 2000"
+              position="0 0 -1"
+              geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+              material="color: black; shader: flat"
+              animation="property: components.material.material.color;
+                        type: color;
+                        to: white;
+                        dur: 1000;
+                        dir: alternate;
+                        loop: true">
+        </a-entity>
+      </a-entity>
+     
+      <a-sky src="#imgCasa"></a-sky>
+      
+      <!-- Sobre Mi -->
+      <a-plane src="#sobremi" 
+               open-modal="modal-sobremi"
+               material="" 
+               geometry="" 
+               position="4.673 -0.20366 -0.99632" 
+               rotation="-17.388123166630226 -69.20069658031058 0.4314372197335099" 
+               scale="1.23386 0.77647 0.997">
+      </a-plane>
+      
+      <!-- Treballs Web -->
+      <a-plane src="#treballsWeb" 
+               open-modal="modal-treballs"
+               material="" 
+               geometry="" 
+               position="5.166 0.443 -3.979" 
+               rotation="-7.559605148956082 -85.67552502150225 -0.8067245755441992" 
+               scale="2.03875 1.22292 1.012">
+      </a-plane>
+      
+      <!-- GitHub -->
+      <a-plane src="#github" 
+               mylink="href: https://github.com/GhizlaneNouali;" 
+               material="" 
+               geometry="" 
+               position="5.58057 0.37102 1.35637" 
+               rotation="-7.280001744932241 -91.33634803739479 0.5563420190720294" 
+               scale="2.25761 1.29655 0.51803">
+      </a-plane>
+
+      <!-- Projectes -->
+      <a-plane position="-3.47101 -1.00545 -6.76777" 
+               src="#projectes" 
+               open-modal="modal-projectes"
+               rotation="0 -0.7958383774367135 0" 
+               transparent="true"  
+               material="" 
+               geometry="" 
+               scale="6.93201 3.55031 1.76014">
+      </a-plane>
+    </a-scene>
+  </body>
+</html>
